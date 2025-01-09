@@ -22,7 +22,7 @@ function App() {
           `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
         );
         setWeatherData(weatherResponse.data);
-        setForecastData(forecastResponse.data.list.slice(0, 5)); // Get 5 forecasts
+        setForecastData(forecastResponse.data.list.filter((_, index) => index % 8 === 0)); // Get daily forecasts
         setError("");
       } catch (err) {
         setError("City not found. Please try again.");
@@ -92,12 +92,19 @@ function App() {
           <div className="forecast-container">
             {forecastData.map((forecast, index) => (
               <div key={index} className="forecast-card">
-                <p>{new Date(forecast.dt * 1000).toLocaleDateString()}</p>
+                <p>
+                  {new Date(forecast.dt * 1000).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
                 <img
                   src={`http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`}
                   alt="weather icon"
                 />
                 <p>{Math.round(forecast.main.temp)}°C</p>
+                <p>{forecast.weather[0].description}</p>
               </div>
             ))}
           </div>
