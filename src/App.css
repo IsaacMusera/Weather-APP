@@ -51,6 +51,7 @@ body.dark-mode {
 .header h1 {
   font-size: 2rem;
   margin: 0;
+  color: inherit; /* Ensure the title color changes based on theme */
 }
 
 .search {
@@ -65,9 +66,13 @@ body.dark-mode {
   border-radius: 20px;
   outline: none;
   width: 250px;
+  background-color: inherit;
+  color: inherit; /* Input field text color */
 }
 
-.search button, .toggle-mode {
+.search button,
+.toggle-mode,
+.about-toggle {
   padding: 10px 20px;
   border: none;
   border-radius: 20px;
@@ -77,7 +82,9 @@ body.dark-mode {
   font-weight: bold;
 }
 
-.search button:hover, .toggle-mode:hover {
+.search button:hover,
+.toggle-mode:hover,
+.about-toggle:hover {
   background-color: #e68900;
 }
 
@@ -104,11 +111,15 @@ body.dark-mode {
 }
 
 .forecast-card {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
+}
+
+.forecast-card img {
+  width: 50px;
+  height: 50px;
 }
 
 /* Animations */
@@ -128,4 +139,9 @@ body.dark-mode {
   color: red;
   font-size: 1rem;
   margin: 20px;
+}
+
+/* About Section */
+.about-section {
+  background: rgba(255, 255)
 }

@@ -9,6 +9,7 @@ function App() {
   const [searchCity, setSearchCity] = useState("");
   const [error, setError] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isAboutVisible, setIsAboutVisible] = useState(false);
 
   const API_KEY = "b4dc84fc8940b8b46cdb18bda17cf579";
 
@@ -45,6 +46,10 @@ function App() {
     document.body.classList.toggle("dark-mode", !isDarkMode); // Update body class for global styling
   };
 
+  const toggleAbout = () => {
+    setIsAboutVisible((prev) => !prev); // Toggle visibility of the about section
+  };
+
   return (
     <div className={`app ${isDarkMode ? "dark" : "light"}`}>
       <header className="header">
@@ -61,7 +66,28 @@ function App() {
         <button className="toggle-mode" onClick={toggleDarkMode}>
           {isDarkMode ? "Light Mode" : "Dark Mode"}
         </button>
+        <button className="about-toggle" onClick={toggleAbout}>
+          {isAboutVisible ? "Hide About" : "About"}
+        </button>
       </header>
+
+      {isAboutVisible && (
+        <div className="about-section">
+          <h3>About This App</h3>
+          <p>
+            Welcome to the Weather App, built by none other than Isaac – the best of the bestest! With this app, you can effortlessly check the weather in cities around the globe and access a 5-day forecast, powered by the OpenWeatherMap API.
+          </p>
+          <p>
+            Isaac, the genius behind this app, has crafted an experience that's both smooth and visually stunning. The interface is user-friendly, intuitive, and even lets you toggle between light and dark mode to suit your mood. 
+          </p>
+          <p>
+            This app is just a glimpse into Isaac's endless talent and unwavering dedication to coding. You’re lucky to be using a product created by one of the best developers out there!
+          </p>
+          <p>
+            Enjoy using the app, and keep an eye on Isaac’s future projects – they're destined to change the game!
+          </p>
+        </div>
+      )}
 
       {error && <p className="error">{error}</p>}
 
