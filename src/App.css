@@ -1,147 +1,258 @@
-/* General styles */
-body, html {
+* {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 .app {
-  text-align: center;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  transition: background 0.4s, color 0.4s;
 }
 
-/* Light and Dark Mode */
-body.light-mode {
-  background-color: #e3f2fd;
-  color: #333;
-}
-
-body.dark-mode {
-  background-color: #212121;
-  color: #eee;
+/* THEMES */
+.app.light {
+  background: #e3f2fd;
+  color: #222;
 }
 
 .app.dark {
-  background-color: #212121;
+  background: #121212;
   color: #eee;
 }
 
-.app.light {
-  background-color: #e3f2fd;
-  color: #333;
-}
-
-/* Header */
+/* HEADER */
 .header {
   width: 100%;
-  padding: 20px;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.header h1 {
-  font-size: 2rem;
-  margin: 0;
-  color: inherit; /* Ensure the title color changes based on theme */
-}
-
-.search {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
 }
 
 .search input {
   padding: 10px;
-  border: none;
   border-radius: 20px;
+  border: none;
   outline: none;
-  width: 250px;
-  background-color: inherit;
-  color: inherit; /* Input field text color */
 }
 
 .search button,
-.toggle-mode,
-.about-toggle {
-  padding: 10px 20px;
-  border: none;
+.header-buttons button {
+  padding: 10px 15px;
   border-radius: 20px;
-  background-color: #ff9800;
+  border: none;
+  background: #2196f3;
   color: white;
   cursor: pointer;
   font-weight: bold;
 }
 
 .search button:hover,
-.toggle-mode:hover,
-.about-toggle:hover {
-  background-color: #e68900;
+.header-buttons button:hover {
+  background: #1976d2;
 }
 
-/* Weather Card */
+/* ABOUT */
+.about-section {
+  background: rgba(255,255,255,0.2);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+  max-width: 600px;
+  text-align: center;
+}
+
+/* WEATHER */
 .weather-card {
   margin-top: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.25);
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Forecast */
+.temperature {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+/* FORECAST */
 .forecast {
   margin-top: 20px;
+  text-align: center;
 }
 
 .forecast-container {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .forecast-card {
-  background: rgba(255, 255, 255, 0.3);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
+  background: rgba(255,255,255,0.25);
+  padding: 15px;
+  border-radius: 15px;
+  width: 120px;
 }
 
-.forecast-card img {
-  width: 50px;
-  height: 50px;
+/* ERROR */
+.error {
+  color: red;
+  margin-top: 10px;
 }
 
-/* Animations */
+/* ANIMATION */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+  
 }
 
-/* Error Message */
-.error {
-  color: red;
-  font-size: 1rem;
-  margin: 20px;
+/* Weather backgrounds */
+
+.app.sunny {
+  background: linear-gradient(to bottom, #87cefa, #e0f7ff);
 }
 
-/* About Section */
-.about-section {
-  background: rgba(255, 255)
+.app.cloudy {
+  background: linear-gradient(to bottom, #b0bec5, #eceff1);
+}
+
+.app.rainy {
+  background: linear-gradient(to bottom, #546e7a, #263238);
+}
+
+.app.snowy {
+  background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+}
+
+.app.stormy {
+  background: linear-gradient(to bottom, #2c3e50, #000000);
+}
+
+.app.default-weather {
+  background: linear-gradient(to bottom, #90caf9, #e3f2fd);
+}
+
+/* Weather backgrounds */
+.app.sunny {
+  background: linear-gradient(to bottom, #87cefa, #e0f7ff);
+}
+
+.app.cloudy {
+  background: linear-gradient(to bottom, #b0bec5, #eceff1);
+}
+
+.app.rainy {
+  background: linear-gradient(to bottom, #546e7a, #263238);
+}
+
+.app.snowy {
+  background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+}
+
+.app.stormy {
+  background: linear-gradient(to bottom, #2c3e50, #000000);
+}
+
+.app.default-weather {
+  background: linear-gradient(to bottom, #90caf9, #e3f2fd);
+}
+
+/* ===== WEATHER EFFECTS ===== */
+.app {
+  position: relative;
+  overflow: hidden;
+}
+
+/* SUN */
+.app.sunny .sun {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #ffd700, #ff9800);
+  border-radius: 50%;
+  filter: blur(5px);
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.1); opacity: 1; }
+}
+
+/* CLOUDS */
+.app.cloudy::after,
+.app.rainy::after,
+.app.stormy::after {
+  content: "";
+  position: absolute;
+  top: 40px;
+  width: 200%;
+  height: 160px;
+  background: url("https://i.imgur.com/Q9a3C7F.png") repeat-x;
+  animation: moveClouds 80s linear infinite;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes moveClouds {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* RAIN */
+.app.rainy::before,
+.app.stormy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url();
+  opacity: 0.25;
+  animation: rain 0.6s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes rain {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+
+/* SNOW */
+.app.snowy .snow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("https://i.imgur.com/5VYp7KD.png");
+  animation: snow 10s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes snow {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+.app > * {
+  position: relative;
+  z-index: 5;
+}
+.app > * {
+  position: relative;
+  z-index: 5;
 }
