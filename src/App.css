@@ -127,3 +127,11 @@
   91%,93%{opacity:1;}
   94%,95%{opacity:0;}
 }
+.time {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  color: white;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
