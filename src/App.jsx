@@ -5,6 +5,7 @@ import "./App.css";
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
+  const [hourlyData, setHourlyData] = useState([]);
   const [city, setCity] = useState("Berlin");
   const [searchCity, setSearchCity] = useState("");
   const [error, setError] = useState("");
@@ -14,48 +15,56 @@ function App() {
 
   const API_KEY = "b4dc84fc8940b8b46cdb18bda17cf579";
 
-  // Fetch weather data
+  // Fetch weather
   useEffect(() => {
     const fetchWeather = async () => {
       try {
         const weatherResponse = await axios.get(
           `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
         );
+
         const forecastResponse = await axios.get(
           `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
         );
 
         setWeatherData(weatherResponse.data);
-        setForecastData(forecastResponse.data.list.filter((_, i) => i % 8 === 0));
+
+        const list = forecastResponse.data.list;
+
+        // 5-day (one per day)
+        setForecastData(list.filter((_, i) => i % 8 === 0));
+
+        // Hourly (next 8 entries ≈ 24 hours)
+        setHourlyData(list.slice(0, 8));
+
         setError("");
       } catch {
         setError("City not found. Please try again.");
         setWeatherData(null);
         setForecastData([]);
+        setHourlyData([]);
       }
     };
 
     fetchWeather();
   }, [city]);
 
-  // Update time every second
+  // Live time
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const ampm = hours >= 12 ? "PM" : "AM";
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const ampm = h >= 12 ? "PM" : "AM";
 
-      const formattedTime = `${(hours % 12 || 12)
+      const formatted = `${(h % 12 || 12)
         .toString()
-        .padStart(2, "0")}:${minutes
+        .padStart(2, "0")}:${m
         .toString()
-        .padStart(2, "0")}:${seconds
-        .toString()
-        .padStart(2, "0")} ${ampm}`;
+        .padStart(2, "0")}:${s.toString().padStart(2, "0")} ${ampm}`;
 
-      setTime(formattedTime);
+      setTime(formatted);
     }, 1000);
 
     return () => clearInterval(interval);
@@ -82,9 +91,10 @@ function App() {
     return "default-weather";
   };
 
+  const today = new Date().toDateString();
+
   return (
     <div className={`app ${isDarkMode ? "dark" : "light"} ${getWeatherClass()}`}>
-      {/* HEADER */}
       <header className="header">
         <h1>Weather App</h1>
 
@@ -108,24 +118,17 @@ function App() {
         </div>
       </header>
 
-      {/* CURRENT TIME */}
       <div className="time">{time}</div>
 
-      {/* ABOUT */}
       {isAboutVisible && (
         <div className="about-section">
           <h3>About This App</h3>
-          <p>
-            This Weather App lets you search any city and see live weather with a
-            5-day forecast, animations, and live time.
-          </p>
+          <p>Live weather with hourly and 5-day forecast.</p>
         </div>
       )}
 
-      {/* ERROR */}
       {error && <p className="error">{error}</p>}
 
-      {/* CURRENT WEATHER */}
       {weatherData && (
         <div className="weather-card">
           <h2>
@@ -135,7 +138,6 @@ function App() {
           <img
             src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@4x.png`}
             alt="weather"
-            className="weather-icon"
           />
 
           <p className="temperature">
@@ -149,7 +151,33 @@ function App() {
         </div>
       )}
 
-      {/* FORECAST */}
+      {/* HOURLY FORECAST */}
+      {hourlyData.length > 0 && (
+        <div className="forecast">
+          <h3>Hourly Forecast</h3>
+          <div className="forecast-container">
+            {hourlyData.map((hour, i) => {
+              const time = new Date(hour.dt * 1000).toLocaleTimeString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+
+              return (
+                <div key={i} className="forecast-card">
+                  <p>{time}</p>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
+                    alt="icon"
+                  />
+                  <p>{Math.round(hour.main.temp)}°C</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 5 DAY FORECAST */}
       {forecastData.length > 0 && (
         <div className="forecast">
           <h3>5-Day Forecast</h3>
@@ -157,20 +185,25 @@ function App() {
           <div className="forecast-container">
             {forecastData.map((forecast, i) => {
               const date = new Date(forecast.dt * 1000);
-
-              const day = date.toLocaleDateString("en-US", {
+              const dayName = date.toLocaleDateString("en-US", {
                 weekday: "long",
               });
-
               const time = date.toLocaleTimeString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               });
 
+              const isToday = date.toDateString() === today;
+
               return (
-                <div key={i} className="forecast-card">
-                  <p className="forecast-day">{day}</p>
-                  <p className="forecast-time">{time}</p>
+                <div
+                  key={i}
+                  className={`forecast-card ${
+                    isToday ? "today-forecast" : ""
+                  }`}
+                >
+                  <p>{dayName}</p>
+                  <p>{time}</p>
 
                   <img
                     src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`}

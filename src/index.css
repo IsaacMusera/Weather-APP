@@ -236,3 +236,8 @@
   position: relative;
   z-index: 5;
 }
+.today-forecast {
+  border: 2px solid gold;
+  box-shadow: 0 0 20px gold;
+  transform: scale(1.08);
+}
